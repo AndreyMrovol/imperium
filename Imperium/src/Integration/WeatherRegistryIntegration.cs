@@ -1,5 +1,6 @@
 #region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,8 +21,15 @@ public static class WeatherRegistryIntegration
         if (!IsEnabled)
             return null;
 
-        return WeatherManager.Weathers.Select(weather => weather.VanillaWeatherType)
-            .ToList();
+        List<Weather> weathers = WeatherRegistry.WeatherManager.Weathers;
+
+        List<LevelWeatherType> weatherTypes = [];
+        foreach (Weather weather in weathers)
+        {
+            weatherTypes.Add(weather.VanillaWeatherType);
+        }
+
+        return weatherTypes;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -30,6 +38,6 @@ public static class WeatherRegistryIntegration
         if (!IsEnabled)
             return;
 
-        WeatherController.ChangeWeather(level, weather);
+        WeatherRegistry.WeatherController.ChangeWeather(level, weather);
     }
 }
